@@ -50,7 +50,7 @@ public class PetStoreUI implements UIGenerator{
         JPanel mainPanel = new JPanel();
         List<AnimalDao> animalList = management.getAnimalList();
 
-        return null;
+        return mainPanel;
     }
 
     private Component generateAnimalsPanel() {
