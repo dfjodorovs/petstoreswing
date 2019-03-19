@@ -4,5 +4,5 @@ import lv.sda.petstore.controllers.Management;
 
 public interface UIGenerator {
 
-    public void generate(Management management);
+    public void generate();
 }

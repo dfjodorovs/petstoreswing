@@ -1,4 +1,6 @@
-package lv.sda.petstore.models;
+package lv.sda.petstore.models.animal;
+
+import lv.sda.petstore.models.FoodTypes;
 
 /*
 * Eat checks if animal can eat a certain food.
