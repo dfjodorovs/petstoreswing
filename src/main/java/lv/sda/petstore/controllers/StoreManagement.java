@@ -24,13 +24,11 @@ care taker can feed animal only if there is enough food.
  */
 public class StoreManagement implements Management {
 
-    private List<Cage> catCages;
-    private List<Cage> parrotCages;
+    private List<Cage> cages;
     private Caretaker caretaker;
 
     public StoreManagement() {
-        catCages = new ArrayList<>();
-        parrotCages = new ArrayList<>();
+        cages = new ArrayList<>();
     }
 
     @Override
@@ -62,31 +60,30 @@ public class StoreManagement implements Management {
     public void createParrot() {
         Size size = Size.SMALL;
         Parrot parrot = new Parrot(size);
-        placeAnimalInCage(parrot, size, parrotCages);
+        placeAnimalInCage(parrot, size);
     }
 
     @Override
     public void createCat() {
         Size size = Size.MEDIUM;
         Cat cat = new Cat(size);
-        placeAnimalInCage(cat, size, catCages);
+        placeAnimalInCage(cat, size);
     }
 
     @Override
     public void createDog() {
         Size size = Size.MEDIUM;
         Cat cat = new Cat(size);
-        placeAnimalInCage(cat, size, catCages);
+        placeAnimalInCage(cat, size);
     }
 
     @Override
     public List<AnimalDao> getAnimalList() {
-        List<AnimalDao> collect = Stream.concat(
-                catCages.stream(),
-                parrotCages.stream())
+        List<AnimalDao> collect = cages.stream()
                 .map(i->
                 {
                     AnimalDao animalDao = new AnimalDao();
+                    animalDao.setId(i.getAnimal().getId());
                     animalDao.setName(i.getAnimal().getName());
                     animalDao.setImage(i.getCageInfo().getImage());
                     animalDao.setHealthLevel(i.getAnimal().getHealthLevel());
@@ -95,12 +92,41 @@ public class StoreManagement implements Management {
         return collect;
     }
 
-    private void placeAnimalInCage(Animal animal, Size s, List<Cage> list) {
+    @Override
+    public void feed(String id) {
+        if(caretaker == null){
+            return;
+        }
+
+        Animal a = getAnimalById(id);
+
+        caretaker.feed(a);
+    }
+
+    @Override
+    public void care(String id) {
+        if(caretaker == null){
+            return;
+        }
+
+        Animal a = getAnimalById(id);
+
+        caretaker.care(a);
+    }
+
+    private Animal getAnimalById(String id) {
+        return cages.stream()
+                .filter(cage -> cage.getAnimal().getId().equals(id))
+                .findFirst()
+                .get().getAnimal();
+    }
+
+    private void placeAnimalInCage(Animal animal, Size s) {
         CageInfo cageInfo = new CageInfo(
                 LocalDateTime.now());
         Cage cage = new Cage(s, cageInfo);
         cage.setAnimal(animal);
-        list.add(cage);
+        cages.add(cage);
     }
 
 }

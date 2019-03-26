@@ -21,4 +21,7 @@ public interface Management {
 
     List<AnimalDao> getAnimalList();
 
+    void feed(String id);
+
+    void care(String id);
 }
